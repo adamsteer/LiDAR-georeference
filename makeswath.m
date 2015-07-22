@@ -112,10 +112,10 @@ if makerxyz > 0
     disp('writing LiDAR and error combined file')
     fid = fopen([path_to file_prefix], 'w');
     if ext_out < 0
-        xyz = [t1, xyz, I, A, sqrt(xerr), sqrt(yerr), sqrt(zerr), sqrt(xerr + yerr + zerr)];
-        fprintf(fid, '%.5f %.3f %.3f %.3f %.3f %.3f %.3f %.3f %.3f %.3f\n', xyz');
+        xyz = [lidar_time, xyz, I, A, sqrt(xerr), sqrt(yerr), sqrt(zerr), sqrt(xerr + yerr + zerr)];
+        fprintf(fid, '%.5f %.6f %.6f %.6f %.6f %.6f %.4f %.4f %.4f %.4f\n', xyz');
     else
-        xyz = [t1, xyz, I, A, sqrt(xerr), sqrt(yerr), sqrt(zerr), sqrt(xerr + yerr + zerr), GPSXe(i), GPSYe(i), GPSZe(i)];
+        xyz = [lidar_time, xyz, I, A, sqrt(xerr), sqrt(yerr), sqrt(zerr), sqrt(xerr + yerr + zerr), GPSXe(i), GPSYe(i), GPSZe(i)];
         fprintf(fid, '%.5f %.3f %.3f %.3f %.3f %.3f %.3f %.3f %.3f %.3f %.3f %.3f %.3f\n', xyz');
     end
     fclose(fid);
@@ -132,10 +132,10 @@ else
     disp('writing LiDAR and error combined file')
     fid = fopen([path_to file_prefix], 'w');
     if ext_out < 0
-        xyz = [t1, xyz, I, A, sqrt(xerr), sqrt(yerr), sqrt(zerr), sqrt(xerr + yerr + zerr)];
-        fprintf(fid, '%.5f %.3f %.3f %.3f %.3f %.3f %.3f %.3f %.3f %.3f\n', xyz');
+        xyz = [lidar_time, xyz, I, A, sqrt(xerr), sqrt(yerr), sqrt(zerr), sqrt(xerr + yerr + zerr)];
+        fprintf(fid, '%.5f %.6f %.6f %.6f %.6f %.6f %.4f %.4f %.4f %.4f\n', xyz');
     else
-        xyz = [t1, xyz, I, A, sqrt(xerr), sqrt(yerr), sqrt(zerr), sqrt(xerr + yerr + zerr), GPSXe(i), GPSYe(i), GPSZe(i)];
+        xyz = [lidar_time, xyz, I, A, sqrt(xerr), sqrt(yerr), sqrt(zerr), sqrt(xerr + yerr + zerr), GPSXe(i), GPSYe(i), GPSZe(i)];
         fprintf(fid, '%.5f %.3f %.3f %.3f %.3f %.3f %.3f %.3f %.3f %.3f %.3f %.3f %.3f\n', xyz');
     end
     fclose(fid);

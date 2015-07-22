@@ -1,7 +1,7 @@
 
 %this file name is generally the only thing that changes
 % often. All else is pretty much fixed per flight.
-lidarfile = '20091122_prydzbay1_04095_aa'; %the file to process
+lidarfile = '20091122_prydzbay1_04095_ab'; %the file to process
 
 %----------------------------------------------------------
 %all below here is generally set once per flight
@@ -58,4 +58,5 @@ disp(['range gate (m): ' num2str(range_gate)])
 
 %configured! now make LiDAR....
 
-getdata; makeswath;
+getdata; 
+makeswath;

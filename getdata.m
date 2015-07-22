@@ -63,10 +63,11 @@ lidar_time=lidar(:,1)+t_offset; %get time from
 
 this = find(lidar_time > t_start & lidar_time < t_stop);
 lidar = lidar(this,:);
+lidar_time = lidar_time(this);
 
-disp(['lidar start time: ' num2str(min(lidar(:,1)))])
-disp(['lidar stop time: ' num2str(max(lidar(:,1)))])
-disp(['flight seconds: ' num2str(max(lidar(:,1)) - min(lidar(:,1)))] )
+disp(['lidar start time: ' num2str(min(lidar_time))])
+disp(['lidar stop time: ' num2str(max(lidar_time))])
+disp(['flight seconds: ' num2str(max(lidar_time) - min(lidar_time))] )
 
 %reduce the pos/imu data to just the window of laser obs;
 j=find(traj_time >= min(lidar_time) & traj_time <= max(lidar_time));
