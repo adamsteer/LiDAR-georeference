@@ -163,7 +163,7 @@ yaw=traj(j,7)+y_adj;
 toc
 
 if addnoise > 0
-  file_prefix = [file_prefix '_nr' num2str(addnoise)];
+  file_prefix = [file_prefix '_nr' num2str(addnoise) '_'];
   tic
   %mess with the trajectory signal here... run 'find_passbands' first...
   disp('use raw IMU accelerations to attempt to mitigate unmodelled LiDAR motion')
