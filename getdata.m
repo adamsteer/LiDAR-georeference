@@ -12,16 +12,9 @@
 %start logging, turned off at the end of makeswath.
 diary(['../' lidarfile '_processing.log']);
 
-disp(['georeferencing lidar file ' lidarfile ' using trajectory ' trajectoryfile] )
-disp('basic processing settings:' )
-disp(['modify trajectory to local coordinates: ' num2str(tmod) ' (-1 = no, > 0 = yes)'])
-disp(['add bandpassed noise to the trajectory: ' num2str(addnoise) ' (-1 = no, > 0 = yes)'])
-disp(['use riegl or computed lidar Y coordinates: ' num2str(makerxyz) ' (-1 = riegl, > 0 = computed)'])
-disp(['give extended output(trajectory uncertainty): ' num2str(ext_out) ' (-1 = no, > 0 = yes)'])
-
 %output file prefixes:
 % to be automagicalised
-file_prefix = lidarfile;
+file_prefix = lidarfile(1, 1:end-5);
 
 tic
 %import trajectory data
