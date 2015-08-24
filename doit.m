@@ -1,15 +1,15 @@
 
 %this file name is generally the only thing that changes
 % often. All else is pretty much fixed per flight.
-lidarfile = '20101106_Alpha_2mil_ad.rasc'; %the file to process
+lidarfile = '121003_f9_ses1_ppp_dbl_ae.rasc'; %the file to process
 
 %----------------------------------------------------------
 %all below here is generally set once per flight
 
-lidarfolder = '../lidar/'; %ascii lidar file directory
-imufile = '../imu/mobile.rot'; %imu acceletation file
-trajectoryfile = '20101106_alpha_ppp_utm45.3dp'; %trajectory file
-trajectoryfolder = '../trajectory/'; %trajectory file root
+lidarfolder = '../../lidar_matlab/lidar/'; %ascii lidar file directory
+imufile = '../../lidar_matlab/imu/mobile.rot'; %imu acceletation file
+trajectoryfile = '20121003_f9_utm_51s.3dp'; %trajectory file
+trajectoryfolder = '../../lidar_matlab/trajectory/'; %trajectory file root
 
 path_to = '../swaths/'; %where to place processed point clouds
 
@@ -23,24 +23,33 @@ t_stop = 10000000;
 % are second of week. Compute by:
 % flight-day-of-week * 86400, where sunday = 0 and saturday = 6.
 
-gps_secofweek = 518400;
+gps_secofweek = 259200;
 
 % time offset. For SIPEX 2007 data in particular, GPS leap seconds
 % are not accounted for. generally use integer seconds here.
-sync_offset = 1.0;
+sync_offset = 0;
 
 t_offset = sync_offset + gps_secofweek;
 
 %switch to turn trajectory modification using base station data on or off.
 % -1 = off, >0 = on. REQUIRES a base station trajectory in UTM coordinates 
 % if turned on - see ice_base_file.
-tmod = -1;
-ice_base_file = '';
+tmod = 1;
+ice_base_file = '../base/ice1_ppp_utm.txt';
+
+
+%attempt to mitigate ice floe rotation using base station data.
+% -1 = off, >0 = on. REQUIRES two floe-based GPS stations
+% with azimuth computed from station 1 -> station 2. 
+% Not tested as a standalone switch, always used in conjuction
+% with tmod ON.
+rot_mod = 1;
+floe_rot_file = '../base/ice1_rdg2_azim.txt';
 
 %switch to add IMU acceleration noise to heading, pitch and roll. The 
 % value used is a scalar multiplier, ie -1 = off,  1 = noise *1, 2 = noise*2.
 % EXPERIMENTAL
-addnoise = 2;
+addnoise = -1;
 
 %switch to control whether we output a point cloud with Riegl XY coordinates
 % from the liDAR or XYZ coordinates computed from ranges and angles.
@@ -48,7 +57,7 @@ addnoise = 2;
 makerxyz = -1;
 
 %append scan line and trajectory XYZ uncertainty to the end of output files:
-ext_out = -1;
+ext_out = 1;
 
 %angle adjustments. If you've empirically determined angles from LiDAR swaths, apply
 % them here. If you have boresight misalignment parameters, set these to 0 and 
@@ -72,23 +81,23 @@ BSZ = 90; %mostly right
 
 %next, boresight misalignment angles
 %corrections from 2012 calibration run, in IMU frame
-%bsc_x = 0.0019; %roll axis
-%bsc_y = 0.0034; %pitch axis
-%bsc_z = 0.0008; %yaw axis
+bsc_x = 0.0189; %roll axis
+bsc_y = 0.1117; %pitch axis
+bsc_z = 0.2058; %yaw axis
 
 %corrections from 2010 calibration, in IMU frame
-bsc_x = 0.0043; %roll
-bsc_y = 0.0035; %pitch
-bsc_z = 0.0272; %heading
+%bsc_x = 0.0043; %roll
+%bsc_y = 0.0035; %pitch
+%bsc_z = 0.0272; %heading
 
 %add empirical offsets here if required
-% note these are offsets in IMU coordinate frame
-% between the IMU and the LiDAR. They should be
-% pretty small! Please use EITHER these or
-% attitiude adjustments in getdata.m, not both.
-% bsc_x = 0.0043; %roll
-% bsc_y = 0.0035; %pitch
-% bsc_z = 0.0272; %heading
+% if LiDAR are still not quite right after applying
+% boresight corrections,(eg sloping across swath)
+% inspect the point cloud to determine any angular corrections
+% and add them here.
+% r_adj = 0.0043; %roll
+% p_adj = 0.0035; %pitch
+% y_adj = 0.0272; %heading
 
 
 boresight = [BSX+bsc_x BSY+bsc_y BSZ+bsc_z] *  pi/180;
@@ -157,9 +166,9 @@ disp(['pitch adjustment: ' num2str(p_adj)])
 disp(['roll adjustment: ' num2str(r_adj)] )
 
 disp('boresighting misalignments from calibration:' )
-disp(['applied boresight misalignment X: ' num2str(bsc_x)])
-disp(['applied boresight misalignment Y: ' num2str(bsc_y)])
-disp(['applied boresight misalignment Z: ' num2str(bsc_z)])
+disp(['applied boresight misalignment X (roll): ' num2str(bsc_x)])
+disp(['applied boresight misalignment Y (pitch): ' num2str(bsc_y)])
+disp(['applied boresight misalignment Z (heading): ' num2str(bsc_z)])
 
 disp('fixed uncertainties:' )
 disp(['lidar range (m) and angular (degrees) uncertainty: ' num2str(errLiDAR(1)) ', ' num2str(errLiDAR(2)*180/pi)])

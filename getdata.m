@@ -106,7 +106,9 @@ if tmod > 0
     disp('reading base station file')
     %import GPS base, reduce GPS base pos to LiDAR obs:
     base_pos=dlmread(ice_base_file, ' ');
-
+    floe_rot=dlmread(floe_rot_file, ' ');
+  
+    
     disp('find base position at t0')
     e_o = base_pos(1,2);
     n_o = base_pos(1,3);
@@ -120,15 +122,35 @@ if tmod > 0
     if length(j_) < 1
          j_ = find(t_b > -1);
     end
+  
     t_b = base_pos(j_,1);
     b_pos(:,1) = base_pos(j_,2);
     b_pos(:,2) = base_pos(j_,3);
     b_pos(:,3) = base_pos(j_,4);
 
+     %rotation corrections!
+    if rot_mod > 0
+        rot_o = floe_rot(1, 2)
+        t_r = floe_rot(:,1);
+        disp('finding base data which match LiDAR timeframe')
+        j_=find(t_r >= min(lidar_time) & t_r <= max(lidar_time));
+        if length(j_) < 1
+            j_ = find(t_r > -1);
+        end
+        
+        t_r = floe_rot(j_,1);
+        b_rot = floe_rot(j_,2);
+        rot_corr = b_rot - rot_o;
+        disp('interpolating floe rotations data to aircraft data rate')
+        rotc_i=interp1(t_r,rot_corr,traj_subset_time, 'linear', 'extrap');
+    
+        yaw = traj(j,7) - rotc_i;
+    end
+        
     disp('subtracting base at t0 from base trajectory to make base corrections')
     b_corr(:,1) = b_pos(:,1) - e_o;
     b_corr(:,2) = b_pos(:,2) - n_o;
-    b_corr(:,3) = b_pos(:,3);% - u_o;
+    b_corr(:,3) = b_pos(:,3); % + u_o;
     
     disp('interpolating base data to aircraft data rate')
     bc_i(:,1)=interp1(t_b,b_corr(:,1),traj_time, 'linear', 'extrap');
@@ -136,22 +158,24 @@ if tmod > 0
     bc_i(:,3)=interp1(t_b,b_corr(:,3),traj_time, 'linear', 'extrap');
 
     disp('adding base corrections to aircraft trajectory')
-    GPS(:,1)=traj(j,2)+bc_i(j,1); 
-    GPS(:,2)=traj(j,3)+bc_i(j,2); 
-    GPS(:,3)=traj(j,4)+bc_i(j,3);
-    disp('done')
+    GPS(:,1)=traj(j,2)-bc_i(j,1); 
+    GPS(:,2)=traj(j,3)-bc_i(j,2); 
+    GPS(:,3)=traj(j,4)-bc_i(j,3);
+    
+    disp('done trajectory processing')
 
 else
     disp('finding trajectory data which match LiDAR timeframe')
     GPS(:,1)=traj(j,2); % these are already UTM in the relevant zone
     GPS(:,2)=traj(j,3); % NOT lat/lon. 
     GPS(:,3)=traj(j,4);
+    yaw = traj(j,7);
 end
 
 %apply angular adjustments
 roll=traj(j,5)+r_adj; % and gyro angles
 pitch=traj(j,6)+p_adj;
-yaw=traj(j,7)+y_adj;
+yaw=yaw+y_adj;
 
 toc
 
