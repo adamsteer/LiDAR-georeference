@@ -70,7 +70,9 @@ The first task is to generate a .3dp file using OxTS's RT-post-process. This can
 the relevant .ncom file and exporting as 3dp. The coordinates in this file need to be converted to UTM. 
 If you're using a *nix variant (including cygwin), the script '3dp2utm.sh' will handle this for you, if 
 passed some information about the relevant UTM zone. Use it like:
-#>bash 3dp2utm infile.3dp 50 south outfile.utm
+
+>bash 3dp2utm infile.3dp 50 south outfile.utm
+
 Store the UTM file in your 'trajectory' folder.
 Since the LIDAR processing code is coordinate-system-agnostic, It is possible to use an arbitrary cartesian
 coordinate system here.
