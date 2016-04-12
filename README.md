@@ -24,6 +24,8 @@ The MATLAB code referred to in this document is able to:
 -Adjust mounting angles by boresight parameters
 -Attempt to reduce noise in output point clouds.
 
+Code shared by Luke Wallace, working with the UTAS TerraLuma group, was instrumental in figuring out how to acheive some of this for the RAPPLS system, specifically for comparing results.
+
 It is not very user-friendly, but it is experimental software designed to be experimented with.
 
 1. Data preparation
@@ -103,8 +105,9 @@ X uncertainty (m) | Y uncertainty (m) | Z uncertainty (m) | 3d uncertainty (m)
 
 An extended format can be made which outputs trajectory uncertainty at each LiDAR point as well (see doit.m). Use for investigation but not production.
 The result is best explored using CloudCompare. Here, ASCII clouds can be re-exported as some more efficient format (eg .las).
-Importantly, heights are computed using whatever input coordinate system is used. 
+Importantly, heights are computed using whatever input coordinate system is used - so if you input orthometric heights you get orthometric heights. If you send in ellipsoidal heights, you get back ellipsoidal heights.
 
 Things to do:
-1. Integrate all this with the APPLS Java project, or port it all to Python
+1. Port to Python, in the lidar_python branch
 2. Ingest binary files from laser scanners, skipping the huuuuge ASCII lidar input files
+3. send back binary files, or potentially HDF (looking ahead to emerging OGC standards)
