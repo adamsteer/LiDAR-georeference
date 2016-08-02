@@ -18,7 +18,7 @@ MATLAB code was developed because a need existed to:
 
 The MATLAB code referred to in this document is able to:
 
-* Geolocate LiDAR in an arbirtrary East-North-Up coordinate system
+ Geolocate LiDAR in an arbirtrary East-North-Up coordinate system
 * Use VCV propagation to provide uncertainty estimates for every point in the resulting cloud
 * Use an arbitrary set of instrument mounting angles
 * Adjust mounting angles by boresight parameters
@@ -94,17 +94,17 @@ Then, specify a time window in GPS seconds-of-week if desired at lines 18-19.
 Determine the second-of-week of your survey date – for example Tuesday, 23 October 2012 has
 GPS second-of-week 172800. Set this at line 26:
 
-gps_secofweek = 172800.
+> gps_secofweek = 172800.
 
 Sometimes an additional time offset is needed, for example if the LiDAR and IMU synced a second 
 late or using UTC rather than GPS time. Account for this at line 30:
 
-sync_offset = 0.0;
+> sync_offset = 0.0;
 
 The script adds the start and stop time in GPS seconds-of-week to the file name, so output files 
 would be something like:
 
-file_prefix_185263_185460.xyz
+> file_prefix_185263_185460.xyz
 
 A series of annotated options follows, read the details and if in doubt set all to -1.
 
@@ -125,6 +125,6 @@ The result is best explored using CloudCompare. Here, ASCII clouds can be re-exp
 Importantly, heights are computed using whatever input coordinate system is used - so if you input orthometric heights you get orthometric heights. If you send in ellipsoidal heights, you get back ellipsoidal heights.
 
 ### Things to do:
-# Port to Python, in the lidar_python branch
-# Ingest binary files from laser scanners, skipping the huuuuge ASCII lidar input files
-# send back binary files, or potentially HDF (looking ahead to emerging OGC standards)
+1. Port to Python, in the lidar_python branch
+2. Ingest binary files from laser scanners, skipping the huuuuge ASCII lidar input files
+3. send back binary files, or potentially HDF (looking ahead to emerging OGC standards)
