@@ -10,15 +10,16 @@ If you want to contribute, use what's in ./MATLAB as a base, and if you don't se
 Rough plan:
 
 - implement the basic equations for 2D and 3D scanners in Python **underway**
-- implement output to .LAS, or postgres-pointcloud (q2 2017). Las is trickier of user defined fields - see next point
 - implement uncertainty propagation using SymPy to handle deriving the required partial derivatives (q2 2017)
+- implement output to .LAS, or postgres-pointcloud (q2 2017). Las is trickier because of user defined fields which will be required (see point above)
+- ...and implement output to an Entwine index, skipping the standard output to LAS/LAZ tiles entirely. All these outputs will depend on PDAL (http://pdal.io)
 - implement binary reading of Reigl LiDAR scanner output (q3 2017)
 
 pipe dreams:
 
 - read trajectory input from Novatel .bin files output from Inertial explorer
 - read trajectory input from binary OxTS NCOM files, will need proj.4 to project (once) from an ECEF frame to some cartesian frame.
-- Schaer (2006) Q-factors
+- Schaer (2007) Q-factors
 - faster implementation for real-time point generation and QA.
 - maybe even it's own kalman filter implementation to do tightly-coupled GPS+inertial trajectory determination, avoiding the proprietary blackbox step currently required (beyond my skills at present)
 
