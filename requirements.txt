@@ -1,0 +1,11 @@
+appdirs==1.4.3
+Cython==0.25.2
+laspy==1.5.0
+mpmath==0.19
+numpy==1.12.1
+packaging==16.8
+PDAL==1.5.0
+pkg-resources==0.0.0
+pyparsing==2.2.0
+six==1.10.0
+sympy==1.0
