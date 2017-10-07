@@ -1,3 +1,21 @@
+"""
+A module for computing LiDAR point coordinates in some reference frame given raw LiDAR isntrument data, a vehicle trajectory, and some uncertainties.
+
+:py:function:scannerconfig creates an instrument configuration object containing a boresight matrix, and lever arm offsets.
+
+:py:function:bs_matrix computes a rotation matrix given a 3-element array of angles which describe the [X,Y,Z] rotations required to orient the scanning instrument reference frame and the navigation instrument reference frame.
+
+:py:function:rpy_matrix_build computes a rotation matrix which describes rotations from the navigation instrument frame to a world frame, usually defined by [heading, pitch, roll].
+
+:py:function:to_lidar_coords computes point coordinates in the 'LiDAR instrument reference frame' given a range and a set of angles
+
+
+#just getting started
+Adam Steer
+2017
+
+"""
+
 #collect dependencies
 import numpy as np
 import sys
@@ -7,11 +25,11 @@ import sys
 #import transformations
 
 def bs_matrix(boresight):
-    
+
     print(boresight)
-    
+
     boresight = np.array(boresight) * np.pi/180
-    
+
     rotbx = np.matrix([[1.,        0.,         0.],
                       [0., np.cos(boresight[0]),-np.sin(boresight[0])],
                       [0., np.sin(boresight[0]),np.cos(boresight[0])]])
@@ -23,7 +41,7 @@ def bs_matrix(boresight):
     rotbz = np.matrix([[np.cos(boresight[2]),-np.sin(boresight[0]),0.],
                       [np.sin(boresight[0]), np.cos(boresight[0]), 0.],
                       [0., 0., 1.]])
-    
+
     #check here that rotation order is correct, maybe pass an argument to
     # define whether it should be ZYX, XYZ, pt anything else?
 
@@ -67,28 +85,29 @@ def to_lidar_coords(R, A, D):
         return R*[np.sin(A), 0, np.cos(A)];
 
 
+
 #### just starting to build
 #### hscannercondig is a python dict containing a key-value pair for each of
 #### required attributes in the georeferencing function
 def main(scannerconfig):
     script = sys.argv[0]
-    
-        
+
+
     gpsXYZ = sys.argv[1]
     RA = sys.argv[2]
-    RPY = sys.argv[3]  
+    RPY = sys.argv[3]
     boresight = sys.argv[4]
     leverarm = sys.argv[5]
     scandimensions = sys.argv[6]
-    
+
     lidar_point = to_lidar_coords(RA[0], RA[1], )
-    
-    
-    
-    
-    
-     
-    
+
+
+
+
+
+
+
 
 if __name__ == '__main__':
    main()
