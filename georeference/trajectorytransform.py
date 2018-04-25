@@ -5,9 +5,6 @@ Generally used to project a trajectory in ECEF coordinates (eg lat/lon) into a p
 
 ##just getting started!
 
-Adam Steer
-2017
-
 """
 
 
