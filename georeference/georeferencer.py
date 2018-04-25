@@ -84,24 +84,23 @@ def to_lidar_coords(R, A, D):
         #what happens if we have a3D scanner?
         return R*[np.sin(A), 0, np.cos(A)];
 
+def to_world_coords();
+    #run the lidar georeferencing equation here...
+
+
+
+
 
 
 #### just starting to build
-#### hscannercondig is a python dict containing a key-value pair for each of
+#### scannercondig is a python dict containing a key-value pair for each of
 #### required attributes in the georeferencing function
-def main(scannerconfig):
-    script = sys.argv[0]
+def main():
+   # read processconfig.json
 
 
-    gpsXYZ = sys.argv[1]
-    RA = sys.argv[2]
-    RPY = sys.argv[3]
-    boresight = sys.argv[4]
-    leverarm = sys.argv[5]
-    scandimensions = sys.argv[6]
 
-    lidar_point = to_lidar_coords(RA[0], RA[1], )
-
+   # run to_world_coords
 
 
 
